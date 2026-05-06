@@ -1,0 +1,44 @@
+# === EDIT EVERY /path/to/... VALUE BELOW TO MATCH YOUR ENVIRONMENT ===
+# repo_root              -> the repo root on your machine
+# pose.config            -> a config under configs/body/.../soccernet/
+# pose.checkpoint        -> trained ViTPose checkpoint (.pth)
+# detector.weights       -> YOLO/RT-DETR weights (.pt)
+# data.ann_file          -> COCO-format annotation JSON
+# data.img_prefix        -> directory of images
+# evaluation.output_dir  -> where eval artifacts get written
+# =====================================================================
+
+run_name: soccernet_rtdetr_test
+repo_root: /path/to/repo
+
+pose:
+  conda_env: vitpose
+  config: /path/to/repo/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/soccernet/ViTPose_small_simple_soccernet_4k_256x192.py
+  checkpoint: /path/to/checkpoints/vitpose_small_baseline_epoch30.pth
+  device: cuda:0
+  samples_per_gpu: 16
+  workers_per_gpu: 4
+
+detector:
+  type: rtdetr
+  label: RT-DETR
+  conda_env: SpaTrack2
+  weights: /path/to/detector_weights/RT_DETR_best.pt
+  device: cuda:0
+  imgsz: 1024
+  conf: 0.2
+  iou: 0.7
+  max_det: 30
+  batch_size: 1
+
+data:
+  ann_file: /path/to/data/annotations/test.json
+  img_prefix: /path/to/data/images/test/
+
+evaluation:
+  output_dir: /path/to/repo/evaluation/rtdetr_test_fixed_threshold
+  position_keypoint_index: 1
+  score_threshold: 0.38868563208970563
+  threshold_tune_ratio: 0.0
+  threshold_tune_seed: 0
+  overwrite: true

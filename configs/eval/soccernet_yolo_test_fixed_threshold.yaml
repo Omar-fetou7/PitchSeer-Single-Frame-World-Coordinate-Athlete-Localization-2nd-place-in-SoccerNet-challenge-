@@ -1,0 +1,45 @@
+# === EDIT EVERY /path/to/... VALUE BELOW TO MATCH YOUR ENVIRONMENT ===
+# repo_root              -> the repo root on your machine
+# pose.config            -> a config under configs/body/.../soccernet/
+# pose.checkpoint        -> trained ViTPose checkpoint (.pth)
+# detector.weights       -> YOLO/RT-DETR weights (.pt)
+# data.ann_file          -> COCO-format annotation JSON
+# data.img_prefix        -> directory of images
+# evaluation.output_dir  -> where eval artifacts get written
+# =====================================================================
+
+run_name: soccernet_yolo_best_test
+repo_root: /path/to/repo
+
+pose:
+  conda_env: vit
+  config: /path/to/repo/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/soccernet/ViTPose_large_soccernet_4k_256x192.py
+  checkpoint: /path/to/checkpoints/vitpose_large_heatmap_epoch2.pth
+  device: cuda:2
+  samples_per_gpu: 16
+  workers_per_gpu: 4
+
+detector:
+  type: yolo
+  label: YOLO
+  conda_env: vit
+  weights: /path/to/detector_weights/yolo_best.pt
+  device: cuda:2
+  imgsz: 1024
+  conf: 0.001
+  iou: 0.7
+  max_det: 300
+  batch_size: 64
+
+data:
+  ann_file: /path/to/data/annotations/test.json
+  img_prefix: /path/to/data/images/test
+
+evaluation:
+  output_dir: /path/to/repo/evaluation/yolo_test
+  position_keypoint_index: 1
+  score_threshold: 0.3773994192889205
+  threshold_tune_ratio: 0.0
+  threshold_tune_seed: 0
+  overwrite: true
+  metrics_name: "vitposeL_epoch2_test.json" # leave empty to use default: <checkpoint-stem>
