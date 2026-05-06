@@ -1,5 +1,5 @@
 # PitchSeer: Single Frame World Coordinate Athlete Detection and Localization
-with Synthetic Data (2nd place in SoccerNet challenge SynLoc challenge)
+with Synthetic Data (2nd place in SoccerNet Spiideo SynLoc challenge)
 
 Top-down pose estimation pipeline for player localization on a football pitch.
 The model predicts two keypoints per player — `body_anchor` (idx 0) and `ground_contact` (idx 1) —
